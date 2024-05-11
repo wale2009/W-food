@@ -12,7 +12,8 @@ const Footer = () => {
             initial='hidden'
             whileInView={'show'}
             viewport={{ once: false, amount: 0 }}
-            className="bg-footer bg-cover bg-no-repeat text-white pt-16">
+            className="bg-footer bg-cover bg-no-repeat text-white pt-16
+            " id='contact'>
             <div
                 className="container ma-auto">
                 <div className="flex flex-col justify-between xl:flex-row">

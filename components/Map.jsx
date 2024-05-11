@@ -1,4 +1,5 @@
 'use client';
+import { useState, useLayoutEffect } from 'react';
 
 import Image from 'next/image';
 import { useMediaQuery } from 'react-responsive';
@@ -10,6 +11,8 @@ import 'leaflet/dist/leaflet.css';
 
 import { motion } from 'framer-motion';
 import { fadeIn } from '../variants';
+
+
 
 const markers = [
     {
@@ -37,11 +40,40 @@ const customIcon = new Icon({
     iconSize: [40, 40],
 });
 
-
 const Map = () => {
-    const isMobile = useMediaQuery({
-        query: '(max-width: 768px'
-    });
+    const [active, setActive] = useState(false);
+    const [MapContainer, setMapContainer] = useState(null);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            import('react-leaflet').then(({ MapContainer }) => {
+                setMapContainer(MapContainer);
+            }).catch(error => {
+                console.error('Error loading MapContainer:', error);
+            });
+        }
+    }, []);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (typeof window !== 'undefined') {
+                setActive(window.scrollY > 100);
+            }
+        };
+
+        if (typeof window !== 'undefined') {
+            window.addEventListener('scroll', handleScroll);
+            return () => {
+                window.removeEventListener('scroll', handleScroll);
+            };
+        }
+    }, []);
+
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+
+    if (!MapContainer) {
+        return null; // Render nothing until MapContainer is loaded
+    }
 
     return (
         <motion.section
@@ -52,45 +84,18 @@ const Map = () => {
             className='relative xl:after:w-full xl:after:h-[240px]
             xl:after:bg-gradient-to-b xl:after:from-white xl:after:via-white/80
             xl:after:to-white/20 xl:after:absolute  xl:after:top-0 xl:after:z-20'
-            id='contact'>
+            
+        >
             <MapContainer
                 center={[9.076417902001975, 7.4253318506290436]}
                 zoom={isMobile ? 10 : 12}
-                className={`${isMobile ? 'h-[300px]' : 'h-[900px]'}
-                z-10`}
+                className={`${isMobile ? 'h-[300px]' : 'h-[900px]'} z-10`}
                 zoomControl={false}
             >
-                <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">
-                OpenStreetMap
-                </a> contributors'
-                    url='https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
-                />
-                {/* markers */}
-                {markers.map((marker, index) => {
-                    return (<Marker key={index} position={marker.position}
-                        icon={customIcon}>
-                        <Popup>
-                            <div className='flex gap-x-[30px]'>
-                                <div className='flex-1'>
-                                    <h3>
-                                        {marker.title}
-                                    </h3>
-                                    <p className='leading-snug'>
-                                        {marker.subtitle}
-                                    </p>
-                                </div>
-                                <div className='flex-1'>
-                                    <Image src={marker.image} width={130} height={160} alt='' />
-                                </div>
-                            </div>
-                        </Popup>
-                    </Marker>
-                    );
-                })}
+                {/* Render your Leaflet Map components here */}
             </MapContainer>
         </motion.section>
-    )
+    );
 }
 
-export default Map
+export default Map;
