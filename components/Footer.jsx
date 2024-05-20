@@ -3,6 +3,12 @@ import { motion } from "framer-motion";
 import { fadeIn } from "../variants";
 import Link from "next/link";
 import Image from "next/image";
+import { FaLinkedin } from "react-icons/fa";
+import { FaSquareXTwitter } from "react-icons/fa6";
+import { FaInstagram } from "react-icons/fa";
+import { FaYoutube } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
+import { FaTiktok } from "react-icons/fa";
 
 
 const Footer = () => {
@@ -81,28 +87,14 @@ const Footer = () => {
                         {/* socials */}
                         <div>
                             <h4 className="font-semibold mb-5"> Socials</h4>
-                            <ul className="flex flex-col gap-y-6 text-sm">
-                                <li>
-                                    <Link href='/'>
-                                        Youtube
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link href='/'>
-                                        Facebook
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link href='/'>
-                                        X
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link href='/'>
-                                        TikTok
-                                    </Link>
-                                </li>
-                            </ul>
+                            <div className="grid grid-cols-3 gap-6 text-lg cursor-pointer">
+                                <FaInstagram />
+                                <FaSquareXTwitter />
+                                <FaLinkedin />
+                                <FaYoutube />
+                                <FaFacebook />
+                                <FaTiktok />
+                            </div>
                         </div>
                     </div>
                 </div>
